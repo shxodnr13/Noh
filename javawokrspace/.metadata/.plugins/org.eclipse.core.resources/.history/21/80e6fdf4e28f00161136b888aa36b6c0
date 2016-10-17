@@ -1,0 +1,51 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+
+class WriteThread{
+	Socket socket;
+	ClientFrame cf;
+	String str;
+	String id;
+	public WriteThread(ClientFrame cf)
+	{
+		this.cf = cf;
+		this.socket = socket;
+	}
+	
+	public void sendMsg()
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(socket.getOutputStream(), true);
+			
+			if(cf.isFirst==true)
+			{
+				InetAddress iaddr = socket.getLocalAddress();
+				String ip = iaddr.getHostAddress();
+				getId();
+				System.out.println("ip:" +ip+"id:"+id);
+				str = "["+id+"] log in ("+ip+")";
+			}else {
+				str = "["+id+"] "+cf.txtF.getText();
+			}
+			pw.println(str);
+			
+		} catch (IOException ie) {
+			// TODO: handle exception
+			System.out.println(ie.getMessage());
+		}
+	}
+}
+
+
+
+
+
+public class MultiCharClient {
+
+}

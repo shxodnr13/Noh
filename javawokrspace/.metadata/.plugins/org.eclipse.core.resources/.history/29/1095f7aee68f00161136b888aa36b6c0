@@ -1,0 +1,92 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Vector;
+
+class WriteThread{
+	Socket socket;
+	ClientFrame cf;
+	String str;
+	String id;
+	public WriteThread(ClientFrame cf)
+	{
+		this.cf = cf;
+		this.socket = socket;
+	}
+	
+	public void sendMsg()
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(socket.getOutputStream(), true);
+			
+			if(cf.isFirst==true)
+			{
+				InetAddress iaddr = socket.getLocalAddress();
+				String ip = iaddr.getHostAddress();
+				getId();
+				System.out.println("ip:" +ip+"id:"+id);
+				str = "["+id+"] log in ("+ip+")";
+			}else {
+				str = "["+id+"] "+cf.txtF.getText();
+			}
+			pw.println(str);
+			
+		} catch (IOException ie) {
+			// TODO: handle exception
+			System.out.println(ie.getMessage());
+		} finally {
+			try {
+				
+				if(br != null) br.close();
+			
+			} catch (IOException ie) {
+				// TODO: handle exception
+				System.out.println(ie.getMessage());
+			}
+		}
+	}
+	
+	public void getId()
+	{
+		id = Id.getId();
+	}
+}
+
+class ReadThread extends Thread{
+	Socket socket;
+	ClientFrame cf;
+	public ReadThread(Socket socket, ClientFrame cf)
+	{
+		this.cf = cf;
+		this.socket=socket;
+	}
+
+
+
+
+public class MultiCharClient {
+	   ServerSocket server = null;
+       Socket socket =null;
+       //클라이언트와 연결된 소켓들을 배열처럼 저장할 벡터객체 생성
+       Vector<Socket> vec = new Vector<Socket>();
+       try{
+              server= new ServerSocket(3000);
+              while(true){
+                     System.out.println("접속대기중..");
+                     socket = server.accept();
+                     //클라이언트와 연결된 소켓을 벡터에 담기
+                     vec.add(socket);
+                     //스레드 구동
+                     new EchoThread(socket, vec).start();
+              }
+       }catch(IOException ie){
+              System.out.println(ie.getMessage());
+       }
+ }
+}

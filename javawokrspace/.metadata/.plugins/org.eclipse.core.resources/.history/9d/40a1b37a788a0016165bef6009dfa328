@@ -1,0 +1,91 @@
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.Vector;
+import java.awt.GridLayout;
+import java.sql.*;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+public class Main extends JFrame{
+	
+	JLabel label, id, cate, item, unit, qty, check;
+	JTextField fid, fcate, fitem, funit, fqty, fcheck;
+	JButton add, delete, update, clear, all, subutton;
+	String items[] = {"Cate", "Item", "Unit", "Qty", "Check"};
+	JComboBox combo;
+	JPanel bottompanel,leftpanel,center, pid,pname,pitem,punit,pqty, pcheck;
+	
+	JScrollPane sp;
+	Vector outer,title,noresult,msg; //noresult: 검색결과 없을때 테이블 때문에
+	JTable table;
+	DefaultTableModel model;
+	
+	String connect = new String("jdbc:mysql://localhost:3306/tw1");
+	String user = new String("root");
+	String passwd = new String("!1234abcd");
+	
+	Connection conn;
+	Statement stat;
+	PreparedStatement pre1, pre2, pre3;
+	ResultSet rs;
+	
+	public Main() {
+		makeGui(); //화면구성
+		prepareDB(); //DB 준비작업
+		select(null); //첫화면에서 테이블의 모든 내용 보여주기 위해 Select하는 함수
+		model.setDataVector(outer, title);
+		
+	}
+	
+	public void makeGui() {
+		label = new JLabel("IT inventory", JLabel.CENTER);
+		id = new JLabel("I D : " , JLabel.CENTER);
+		
+		fid = new JTextField(15);
+		pid = new JPanel();
+		pid.add(id);
+		pid.add(fid);
+		
+		cate = new JLabel("Category : ");
+		fcate = new JTextField(15);
+		pname = new JPanel();
+		pname.add(cate);
+		pname.add(fcate);
+	
+		item = new JLabel("Item : ");
+		fitem = new JTextField(15);
+		pitem = new JPanel();
+		pitem.add(item);
+		pitem.add(fitem);
+		
+		unit = new JLabel("Unit : " );
+		funit = new JTextField(15);
+		punit = new JPanel();
+		punit.add(unit);
+		punit.add(funit);
+		
+		qty = new JLabel("qty : ");
+		fqty = new JTextField(15);
+		pqty = new JPanel();
+		pqty.add(qty);
+		pqty.add(fqty);
+		
+		check = new JLabel("Check : ");
+		fcheck = new JTextField(15);
+		pcheck = new JPanel();
+		pcheck.add(check);
+		pcheck.add(fcheck);
+		
+		leftpanel = new JPanel();
+		leftpanel.setLayout(new GridLayout(6, 1));
+		leftpanel.add(pid);
+		leftpanel.add(pname);
+		leftpanel.add(pitem);
+		leftpanel.add(punit);
+		leftpanel.add(pqty);
+		leftpanel.add(pcheck);
+		
+		
+		
+	}
+}

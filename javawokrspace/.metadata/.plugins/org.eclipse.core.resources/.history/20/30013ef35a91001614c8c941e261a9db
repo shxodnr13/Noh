@@ -1,0 +1,53 @@
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.GridLayout;
+import java.awt.List;
+import java.awt.TextField;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.net.Socket;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class WaitingRoom implements ActionListener, MouseListener{
+	
+	List list1, list2;
+	JTextField tf1;
+	JButton b;
+	Socket s;
+	BufferedWriter bw;
+	BufferedReader br;
+	String id;
+	Room room;
+	WaitingRoom(String id)
+	{
+		super(id +"Welcome");
+		this.id = id;
+		
+		list1 = new List();
+		list2 = new List();
+		tf1 = new JTextField();
+		b= new JButton("Create a room");
+		b.addActionListener(this);
+		
+		list1.addActionListener(this);
+		JPanel p1 = new JPanel();
+		p1.setLayout(new GridLayout(1, 2));
+		JPanel p2 = new JPanel();
+		p2.setLayout(new BorderLayout());
+		
+		p1.add(list1);
+		p2.add(list2);
+		
+		p2.add(tf1);
+		p2.add(b, "East");
+		
+		add(p1);
+		add(p2, "South");
+	}
+
+}
